@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{562EE6A0-2EB9-4464-98AD-7A961F859D9A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Paritee.StardewValleyAPI</RootNamespace>
+    <AssemblyName>Paritee.StardewValleyAPI</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Buildings\AnimalShop\AnimalShop.cs" />
+    <Compile Include="Buildings\AnimalShop\FarmAnimals\StockConfig.cs" />
+    <Compile Include="Buildings\AnimalShop\FarmAnimals\Stock.cs" />
+    <Compile Include="Buildings\AnimalShop\FarmAnimals\StockDoesNotExistException.cs" />
+    <Compile Include="Buildings\Coops\Coop.cs" />
+    <Compile Include="Content\Data.cs" />
+    <Compile Include="Buildings\Coops\Incubator.cs" />
+    <Compile Include="FarmAnimals\Data.cs" />
+    <Compile Include="FarmAnimals\FarmAnimal.cs" />
+    <Compile Include="FarmAnimals\Sprite.cs" />
+    <Compile Include="FarmAnimals\Type.cs" />
+    <Compile Include="FarmAnimals\Variations\Blue.cs" />
+    <Compile Include="FarmAnimals\Variations\BlueConfig.cs" />
+    <Compile Include="FarmAnimals\Variations\Variation.cs" />
+    <Compile Include="FarmAnimals\Variations\Void.cs" />
+    <Compile Include="FarmAnimals\Variations\VoidConfig.cs" />
+    <Compile Include="FarmAnimals\Variations\White.cs" />
+    <Compile Include="Players\Actions\BreedFarmAnimal.cs" />
+    <Compile Include="Players\Actions\BreedFarmAnimalConfig.cs" />
+    <Compile Include="Players\Actions\PurchaseFarmAnimal.cs" />
+    <Compile Include="Players\Farmer.cs" />
+    <Compile Include="Menus\ActiveClickableMenu.cs" />
+    <Compile Include="Menus\NameFarmAnimalMenu.cs" />
+    <Compile Include="Menus\NamingMenu.cs" />
+    <Compile Include="Menus\Menu.cs" />
+    <Compile Include="Menus\PurchaseFarmAnimalMenu.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\Enums.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\analyzers\dotnet\cs\StardewModdingAPI.ModBuildConfig.Analyzer.dll" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.2.2.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  -->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>
