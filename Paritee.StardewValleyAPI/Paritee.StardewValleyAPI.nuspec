@@ -6,13 +6,14 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <projectUrl>https://github.com/paritee/Paritee-StardewValleyAPI</projectUrl>
+    <projectUrl>https://github.com/paritee/Paritee.StardewValleyAPI</projectUrl>
+    <license type="expression">GPL-3.0-only</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright 2019</copyright>
     <tags>Stardew Valley StardewValley StardewValleyAPI SMAPI Mod Paritee BFAV FarmAnimal</tags>
     <dependencies>
-      <dependency id="Pathoschild.Stardew.ModBuildConfig" version="2.2" />
+      <dependency id="Pathoschild.Stardew.ModBuildConfig" version="2.2" exclude="compile" />
     </dependencies>
   </metadata>
 </package>
