@@ -125,18 +125,33 @@ namespace Paritee.StardewValleyAPI.Menus
 
         private void PropogateStockSelection(Item stock)
         {
-            ActiveClickableMenu ActiveClickableMenu = new ActiveClickableMenu();
+            ActiveClickableMenu activeClickableMenu = new ActiveClickableMenu();
 
-            ActiveClickableMenu.SetValue<bool>("onFarm", true);
-            ActiveClickableMenu.SetValue<int>("priceOfAnimal", stock.salePrice());
+            activeClickableMenu.SetValue<bool>("onFarm", true);
+            activeClickableMenu.SetValue<int>("priceOfAnimal", stock.salePrice());
 
             // PurchaseAnimalsMenu.cs: public PurchaseAnimalsMenu(List<StardewValley.Object> stock)
             Stock.Name name = this.PurchaseFarmAnimal.AnimalShop.FarmAnimalStock.StringToName(stock.Name);
-            FarmAnimals.FarmAnimal AnimalBeingPurchased = this.PurchaseFarmAnimal.RandomizeFarmAnimal(name);
+            FarmAnimals.FarmAnimal animalBeingPurchased = this.PurchaseFarmAnimal.RandomizeFarmAnimal(name);
 
             // Update the animalBeingPurchased
             // !!! We have to convert to a base Farm Animal due to exceptions thrown by the day's save XML functions
-            ActiveClickableMenu.SetValue<StardewValley.FarmAnimal>("animalBeingPurchased", AnimalBeingPurchased.ToFarmAnimal());
+            this.SetAnimalBeingPurchased(animalBeingPurchased);
+        }
+
+        public FarmAnimals.FarmAnimal GetAnimalBeingPurchased()
+        {
+            ActiveClickableMenu activeClickableMenu = new ActiveClickableMenu();
+            FarmAnimal animalBeingPurchased = activeClickableMenu.GetValue<StardewValley.FarmAnimal>("animalBeingPurchased");
+
+            return new FarmAnimals.FarmAnimal(animalBeingPurchased.type, animalBeingPurchased.myID, animalBeingPurchased.ownerID);
+        }
+
+        public void SetAnimalBeingPurchased(FarmAnimals.FarmAnimal animalBeingPurchased)
+        {
+            ActiveClickableMenu activeClickableMenu = new ActiveClickableMenu();
+
+            activeClickableMenu.SetValue<StardewValley.FarmAnimal>("animalBeingPurchased", animalBeingPurchased.ToFarmAnimal());
         }
     }
 }

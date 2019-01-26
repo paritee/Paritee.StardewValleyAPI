@@ -23,9 +23,9 @@ namespace Paritee.StardewValleyAPI.Buidlings.AnimalShop.FarmAnimals
             Rabbit
         }
 
-        private Blue BlueFarmAnimals;
-        private Paritee.StardewValleyAPI.FarmAnimals.Variations.Void VoidFarmAnimals;
-        private Dictionary<Stock.Name, string[]> Available;
+        public Blue BlueFarmAnimals;
+        public Paritee.StardewValleyAPI.FarmAnimals.Variations.Void VoidFarmAnimals;
+        public Dictionary<Stock.Name, string[]> Available;
 
         public Stock(StockConfig stockConfig)
         {
