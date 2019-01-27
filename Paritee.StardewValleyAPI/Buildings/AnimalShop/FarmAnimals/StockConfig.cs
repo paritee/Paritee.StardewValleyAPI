@@ -1,10 +1,11 @@
 ﻿using FarmAnimalsData = Paritee.StardewValleyAPI.FarmAnimals.Data;
 using FarmAnimalsType = Paritee.StardewValleyAPI.FarmAnimals.Type;
 using Paritee.StardewValleyAPI.FarmAnimals.Variations;
+using Paritee.StardewValleyAPI.Utilities;
 using System.Collections.Generic;
-using VariationsVoid = Paritee.StardewValleyAPI.FarmAnimals.Variations.Void;
 using System;
 using System.Linq;
+using VariationsVoid = Paritee.StardewValleyAPI.FarmAnimals.Variations.Void;
 
 namespace Paritee.StardewValleyAPI.Buidlings.AnimalShop.FarmAnimals
 {
@@ -40,7 +41,7 @@ namespace Paritee.StardewValleyAPI.Buidlings.AnimalShop.FarmAnimals
                 {
                     string baseType = entry.Key.Split(' ').Last();
 
-                    Stock.Name stockName = baseType.Equals(FarmAnimalsType.Base.Cow)
+                    Stock.Name stockName = baseType.Equals(Enums.GetValue(FarmAnimalsType.Base.Cow))
                         ? Stock.Name.DairyCow
                         : (Stock.Name)Enum.Parse(typeof(Stock.Name), baseType);
 
