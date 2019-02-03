@@ -7,14 +7,14 @@ namespace Paritee.StardewValleyAPI.Players.Actions
     public class BreedFarmAnimalConfig
     {
         public List<string> AvailableFarmAnimals;
-        public Blue BlueFarmAnimals;
-        public Data FarmAnimalData;
+        public BlueVariation BlueFarmAnimals;
+        public FarmAnimalsData FarmAnimalData;
 
-        public BreedFarmAnimalConfig(List<string> availableFarmAnimals, Blue blueFarmAnimals)
+        public BreedFarmAnimalConfig(List<string> availableFarmAnimals, BlueVariation blueFarmAnimals)
         {
             this.AvailableFarmAnimals = availableFarmAnimals;
             this.BlueFarmAnimals = blueFarmAnimals;
-            this.FarmAnimalData = new Data();
+            this.FarmAnimalData = new FarmAnimalsData();
 
         }
     }

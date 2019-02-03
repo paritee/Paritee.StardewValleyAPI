@@ -55,7 +55,7 @@ namespace Paritee.StardewValleyAPI.FarmAnimals
 
         private bool SetFieldsFromData()
         {
-            Data FarmAnimalData = new Data();
+            FarmAnimalsData FarmAnimalData = new FarmAnimalsData();
 
             // Grab the data
             Dictionary<string, string> Data = FarmAnimalData.GetEntries();
@@ -69,8 +69,8 @@ namespace Paritee.StardewValleyAPI.FarmAnimals
 
             ((NetFieldBase<byte, NetByte>)this.daysToLay).Set(Byte.Parse(DataArr[0]));
             ((NetFieldBase<byte, NetByte>)this.ageWhenMature).Set(Byte.Parse(DataArr[1]));
-            ((NetFieldBase<int, NetInt>)this.defaultProduceIndex).Set(Int32.Parse(DataArr[Paritee.StardewValleyAPI.FarmAnimals.Data.DEFAULT_PRODUCE_INDEX]));
-            ((NetFieldBase<int, NetInt>)this.deluxeProduceIndex).Set(Int32.Parse(DataArr[Paritee.StardewValleyAPI.FarmAnimals.Data.DELUXE_PRODUCE_INDEX]));
+            ((NetFieldBase<int, NetInt>)this.defaultProduceIndex).Set(Int32.Parse(DataArr[Paritee.StardewValleyAPI.FarmAnimals.FarmAnimalsData.DEFAULT_PRODUCE_INDEX]));
+            ((NetFieldBase<int, NetInt>)this.deluxeProduceIndex).Set(Int32.Parse(DataArr[Paritee.StardewValleyAPI.FarmAnimals.FarmAnimalsData.DELUXE_PRODUCE_INDEX]));
             ((NetFieldBase<string, NetString>)this.sound).Set(DataArr[4].Equals(FarmAnimal.NONE) ? (string)null : DataArr[4]);
             ((NetFieldBase<Rectangle, NetRectangle>)this.frontBackBoundingBox).Set(new Rectangle(Int32.Parse(DataArr[5]), Int32.Parse(DataArr[6]), Int32.Parse(DataArr[7]), Int32.Parse(DataArr[8])));
             ((NetFieldBase<Rectangle, NetRectangle>)this.sidewaysBoundingBox).Set(new Rectangle(Int32.Parse(DataArr[9]), Int32.Parse(DataArr[10]), Int32.Parse(DataArr[11]), Int32.Parse(DataArr[12])));

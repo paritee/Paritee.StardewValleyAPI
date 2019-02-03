@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Paritee.StardewValleyAPI.Buidlings.AnimalShop.FarmAnimals
+namespace Paritee.StardewValleyAPI.Buildings.AnimalShop.FarmAnimals
 {
     public class StockDoesNotExistException : Exception
     {

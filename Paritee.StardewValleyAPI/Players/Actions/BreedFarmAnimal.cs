@@ -1,6 +1,6 @@
-﻿using Paritee.StardewValleyAPI.Buildings.Coops;
+﻿using Paritee.StardewValleyAPI.Buildings.AnimalHouses;
 using Paritee.StardewValleyAPI.FarmAnimals;
-using Paritee.StardewValleyAPI.FarmAnimals.Buildings.Coops;
+using Paritee.StardewValleyAPI.FarmAnimals.Buildings.AnimalHouses;
 using Paritee.StardewValleyAPI.FarmAnimals.Variations;
 using StardewValley;
 using StardewValley.Events;
@@ -21,8 +21,8 @@ namespace Paritee.StardewValleyAPI.Players.Actions
         public Player Farmer;
         private List<string> AvailableFarmAnimals;
 
-        private Blue BlueFarmAnimals;
-        private Data FarmAnimalData;
+        private BlueVariation BlueFarmAnimals;
+        private FarmAnimalsData FarmAnimalData;
 
         public BreedFarmAnimal(Player farmer, BreedFarmAnimalConfig breedFarmAnimalConfig)
         {
@@ -46,10 +46,10 @@ namespace Paritee.StardewValleyAPI.Players.Actions
         public FarmAnimals.FarmAnimal CreateFromParent(StardewValley.FarmAnimal parent, string name)
         {
             // @TODO: Randomize based on farm animal data/category (ex. Dairy Cow)?
-            return this.CreateBaby(name, parent.type, (AnimalHouse)parent.home.indoors, parent.myID);
+            return this.CreateBaby(name, parent.type, (StardewValley.AnimalHouse)parent.home.indoors, parent.myID);
         }
 
-        public void CreateFromIncubator(AnimalHouse animalHouse, string name)
+        public void CreateFromIncubator(StardewValley.AnimalHouse animalHouse, string name)
         {
             Incubator incubator;
 
@@ -119,7 +119,7 @@ namespace Paritee.StardewValleyAPI.Players.Actions
             return this.FarmAnimalData.FindTypesByProduce(produceIndex);
         }
 
-        private void CreateRandomBaby(string name, List<string> types, AnimalHouse animalHouse, long parentID = FarmAnimals.FarmAnimal.PARENT_ID_DEFAULT)
+        private void CreateRandomBaby(string name, List<string> types, StardewValley.AnimalHouse animalHouse, long parentID = FarmAnimals.FarmAnimal.PARENT_ID_DEFAULT)
         {
             if (types.Count < 1)
                 return;
@@ -131,7 +131,7 @@ namespace Paritee.StardewValleyAPI.Players.Actions
             this.CreateBaby(name, type, animalHouse, parentID);
         }
 
-        private FarmAnimals.FarmAnimal CreateBaby(string name, string type, AnimalHouse animalHouse, long parentID = FarmAnimals.FarmAnimal.PARENT_ID_DEFAULT)
+        private FarmAnimals.FarmAnimal CreateBaby(string name, string type, StardewValley.AnimalHouse animalHouse, long parentID = FarmAnimals.FarmAnimal.PARENT_ID_DEFAULT)
         {
             FarmAnimals.FarmAnimal baby = new FarmAnimals.FarmAnimal(type, this.Farmer.GetNewID(), this.Farmer.MyID);
 

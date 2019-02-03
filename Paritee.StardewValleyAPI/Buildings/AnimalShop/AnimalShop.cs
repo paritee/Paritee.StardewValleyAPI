@@ -1,6 +1,6 @@
-﻿using Paritee.StardewValleyAPI.Buidlings.AnimalShop.FarmAnimals;
+﻿using Paritee.StardewValleyAPI.Buildings.AnimalShop.FarmAnimals;
 
-namespace Paritee.StardewValleyAPI.Buidlings.AnimalShop
+namespace Paritee.StardewValleyAPI.Buildings.AnimalShop
 {
     public class AnimalShop
     {

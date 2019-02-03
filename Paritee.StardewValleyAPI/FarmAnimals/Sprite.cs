@@ -43,7 +43,7 @@ namespace Paritee.StardewValleyAPI.FarmAnimals
         private string GetDefaultFilePath()
         {
             // Use the BabyWhite Chicken image as default for anything that could not be found
-            White WhiteFarmAnimals = new White();
+            WhiteVariation WhiteFarmAnimals = new WhiteVariation();
             return this.GetAssetDirectory() + this.GetBaby() + WhiteFarmAnimals.ApplyPrefix(FarmAnimals.Type.ConvertBaseToString(FarmAnimals.Type.Base.Chicken));
         }
 

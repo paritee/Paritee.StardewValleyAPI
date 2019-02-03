@@ -1,5 +1,4 @@
-﻿using Paritee.StardewValleyAPI.Buidlings.AnimalShop.FarmAnimals;
-using Paritee.StardewValleyAPI.Players.Actions;
+﻿using Paritee.StardewValleyAPI.Players.Actions;
 using StardewValley.Menus;
 using StardewValley;
 using StardewModdingAPI.Events;
@@ -131,8 +130,7 @@ namespace Paritee.StardewValleyAPI.Menus
             activeClickableMenu.SetValue<int>("priceOfAnimal", stock.salePrice());
 
             // PurchaseAnimalsMenu.cs: public PurchaseAnimalsMenu(List<StardewValley.Object> stock)
-            Stock.Name name = this.PurchaseFarmAnimal.AnimalShop.FarmAnimalStock.StringToName(stock.Name);
-            FarmAnimals.FarmAnimal animalBeingPurchased = this.PurchaseFarmAnimal.RandomizeFarmAnimal(name);
+            FarmAnimals.FarmAnimal animalBeingPurchased = this.PurchaseFarmAnimal.RandomizeFarmAnimal(stock.Name);
 
             // Update the animalBeingPurchased
             // !!! We have to convert to a base Farm Animal due to exceptions thrown by the day's save XML functions

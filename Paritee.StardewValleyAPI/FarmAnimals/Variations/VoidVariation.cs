@@ -2,19 +2,19 @@
 
 namespace Paritee.StardewValleyAPI.FarmAnimals.Variations
 {
-    public class Void : Variation
+    public class VoidVariation : Variation
     {
         public const string VOID = "Void";
         public const int QUEST_ID = 27; // Goblin Problem - end game quest as of SDV v.1.3.27
 
         public override string Prefix
         {
-            get { return Void.VOID; }
+            get { return VoidVariation.VOID; }
         }
 
         private VoidConfig Config;
 
-        public Void(VoidConfig config)
+        public VoidVariation(VoidConfig config)
         {
             this.Config = config;
         }
@@ -46,7 +46,7 @@ namespace Paritee.StardewValleyAPI.FarmAnimals.Variations
                 return false;
 
             // Use the same chance used for the Vanilla Blue Chickens
-            return this.RollChance(Blue.CHANCE_VALUE);
+            return this.RollChance(BlueVariation.CHANCE_VALUE);
         }
 
         public List<string> SanitizeForShop(List<string> types, byte safety = Variation.SAFETY_UNSAFE)

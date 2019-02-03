@@ -1,5 +1,5 @@
-﻿using Paritee.StardewValleyAPI.Buidlings.AnimalShop;
-using Paritee.StardewValleyAPI.Buidlings.AnimalShop.FarmAnimals;
+﻿using Paritee.StardewValleyAPI.Buildings.AnimalShop;
+using Paritee.StardewValleyAPI.Buildings.AnimalShop.FarmAnimals;
 using StardewValley;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace Paritee.StardewValleyAPI.Players.Actions
             this.AnimalShop = animalShop;
         }
 
-        public FarmAnimals.FarmAnimal RandomizeFarmAnimal(Stock.Name name)
+        public FarmAnimals.FarmAnimal RandomizeFarmAnimal(string name)
         {
             // We need to randomize after the FarmAnimal is created to avoid restrictions in FarmAnimal.cs code (ex. "Blue Cow")
             List<string> Types = this.AnimalShop.FarmAnimalStock.GetAvailableTypes(name, Stock.SANITIZE_REMOVE);

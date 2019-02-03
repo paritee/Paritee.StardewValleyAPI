@@ -46,23 +46,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buildings\AnimalHouses\AnimalHouse.cs" />
+    <Compile Include="Buildings\AnimalHouses\Barn.cs" />
     <Compile Include="Buildings\AnimalShop\AnimalShop.cs" />
+    <Compile Include="Buildings\AnimalShop\FarmAnimals\FarmAnimalForPurchase.cs" />
     <Compile Include="Buildings\AnimalShop\FarmAnimals\StockConfig.cs" />
     <Compile Include="Buildings\AnimalShop\FarmAnimals\Stock.cs" />
     <Compile Include="Buildings\AnimalShop\FarmAnimals\StockDoesNotExistException.cs" />
-    <Compile Include="Buildings\Coops\Coop.cs" />
+    <Compile Include="Buildings\AnimalHouses\Coop.cs" />
+    <Compile Include="Buildings\BlueprintsData.cs" />
     <Compile Include="Content\Data.cs" />
-    <Compile Include="Buildings\Coops\Incubator.cs" />
-    <Compile Include="FarmAnimals\Data.cs" />
+    <Compile Include="Buildings\AnimalHouses\Incubator.cs" />
+    <Compile Include="FarmAnimals\FarmAnimalsData.cs" />
     <Compile Include="FarmAnimals\FarmAnimal.cs" />
     <Compile Include="FarmAnimals\Sprite.cs" />
     <Compile Include="FarmAnimals\Type.cs" />
-    <Compile Include="FarmAnimals\Variations\Blue.cs" />
+    <Compile Include="FarmAnimals\Variations\BlueVariation.cs" />
     <Compile Include="FarmAnimals\Variations\BlueConfig.cs" />
     <Compile Include="FarmAnimals\Variations\Variation.cs" />
-    <Compile Include="FarmAnimals\Variations\Void.cs" />
+    <Compile Include="FarmAnimals\Variations\VoidVariation.cs" />
     <Compile Include="FarmAnimals\Variations\VoidConfig.cs" />
-    <Compile Include="FarmAnimals\Variations\White.cs" />
+    <Compile Include="FarmAnimals\Variations\WhiteVariation.cs" />
     <Compile Include="Players\Actions\BreedFarmAnimal.cs" />
     <Compile Include="Players\Actions\BreedFarmAnimalConfig.cs" />
     <Compile Include="Players\Actions\PurchaseFarmAnimal.cs" />

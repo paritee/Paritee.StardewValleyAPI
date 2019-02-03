@@ -1,10 +1,7 @@
-﻿using Paritee.StardewValleyAPI.Buildings.Coops;
-using StardewValley;
+﻿using StardewValley;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Paritee.StardewValleyAPI.FarmAnimals.Buildings.Coops
+namespace Paritee.StardewValleyAPI.FarmAnimals.Buildings.AnimalHouses
 {
     public class Incubator
     {

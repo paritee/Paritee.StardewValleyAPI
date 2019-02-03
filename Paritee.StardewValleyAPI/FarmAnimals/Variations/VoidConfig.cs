@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace Paritee.StardewValleyAPI.FarmAnimals.Variations
+﻿namespace Paritee.StardewValleyAPI.FarmAnimals.Variations
 {
     public class VoidConfig
     {

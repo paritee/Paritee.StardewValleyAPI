@@ -1,17 +1,19 @@
-﻿using Paritee.StardewValleyAPI.FarmAnimals.Variations;
-using Paritee.StardewValleyAPI.Utilities;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Paritee.StardewValleyAPI.FarmAnimals.Variations;
+using StardewValley.Menus;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace Paritee.StardewValleyAPI.Buidlings.AnimalShop.FarmAnimals
+namespace Paritee.StardewValleyAPI.Buildings.AnimalShop.FarmAnimals
 {
     public class Stock
     {
         public const byte SANITIZE_KEEP = 0;
         public const byte SANITIZE_REMOVE = 1;
 
-        public enum Name
+        public enum VanillaName
         {
             [EnumMember(Value = "Dairy Cow")]
             DairyCow,
@@ -23,9 +25,9 @@ namespace Paritee.StardewValleyAPI.Buidlings.AnimalShop.FarmAnimals
             Rabbit
         }
 
-        public Blue BlueFarmAnimals;
-        public Paritee.StardewValleyAPI.FarmAnimals.Variations.Void VoidFarmAnimals;
-        public Dictionary<Stock.Name, string[]> Available;
+        public BlueVariation BlueFarmAnimals;
+        public VoidVariation VoidFarmAnimals;
+        public List<FarmAnimalForPurchase> FarmAnimalsForPurchase;
 
         public Stock(StockConfig stockConfig)
         {
@@ -33,37 +35,59 @@ namespace Paritee.StardewValleyAPI.Buidlings.AnimalShop.FarmAnimals
             this.VoidFarmAnimals = stockConfig.VoidFarmAnimals;
 
             // Use the lists because the meat indices can't be relied upon (ex. mutton)
-            this.Available = stockConfig.Available;
+            this.FarmAnimalsForPurchase = stockConfig.FarmAnimalsForPurchase;
         }
 
-        public Stock.Name StringToName(string name)
+        public List<ClickableTextureComponent> DetermineClickableComponents(PurchaseAnimalsMenu menu, Dictionary<string, Texture2D> textures)
         {
-            foreach (KeyValuePair<Stock.Name, string[]> entry in this.Available)
+            List<ClickableTextureComponent> animalsToPurchase = new List<ClickableTextureComponent>();
+
+            for (int index = 0; index < this.FarmAnimalsForPurchase.Count; ++index)
             {
-                if (name.Equals(Enums.GetValue(entry.Key)))
-                    return entry.Key;
+                FarmAnimalForPurchase farmAnimalForPurchase = this.FarmAnimalsForPurchase[index];
+
+                string name = farmAnimalForPurchase.salePrice().ToString();
+                string label = (string)null;
+                string hoverText = farmAnimalForPurchase.displayName + "_" + farmAnimalForPurchase.getDescription();
+
+                Rectangle bounds = new Microsoft.Xna.Framework.Rectangle(menu.xPositionOnScreen + IClickableMenu.borderWidth + index % 3 * 64 * 2, menu.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth / 2 + index / 3 * 85, 128, 64);
+                Texture2D texture = textures[farmAnimalForPurchase.Name];
+                Rectangle sourceRect = new Rectangle(0, 0, texture.Width, texture.Height);
+                float scale = 4f;
+                bool drawShadow = farmAnimalForPurchase.Type == null;
+
+                ClickableTextureComponent textureComponent = new ClickableTextureComponent(name, bounds, label, hoverText, texture, sourceRect, scale, drawShadow)
+                {
+                    item = farmAnimalForPurchase,
+                    myID = index,
+                    rightNeighborID = index % 3 == 2 ? -1 : index + 1,
+                    leftNeighborID = index % 3 == 0 ? -1 : index - 1,
+                    downNeighborID = index + 3,
+                    upNeighborID = index - 3
+                };
+
+                animalsToPurchase.Add(textureComponent);
             }
 
-            throw new StockDoesNotExistException();
+            return animalsToPurchase;
         }
 
-        public Stock.Name DetermineNameFromType(string type)
+        public string DetermineNameFromType(string type)
         {
-            foreach (KeyValuePair<Stock.Name, string[]> entry in this.Available)
+            foreach (FarmAnimalForPurchase farmAnimalForPurchase in this.FarmAnimalsForPurchase)
             {
-                foreach (string stockType in entry.Value)
+                if (farmAnimalForPurchase.FarmAnimalTypes.Contains(type))
                 {
-                    if (type == stockType)
-                        return entry.Key;
+                    return farmAnimalForPurchase.Name;
                 }
             }
 
             throw new StockDoesNotExistException();
         }
 
-        public List<string> GetAvailableTypes(Stock.Name name, byte sanitize = Stock.SANITIZE_KEEP)
+        public List<string> GetAvailableTypes(string name, byte sanitize = Stock.SANITIZE_KEEP)
         {
-            List<string> Types = this.Available[name].ToList();
+            List<string> Types = this.FarmAnimalsForPurchase.First<FarmAnimalForPurchase>(k => k.Name == name).FarmAnimalTypes;
 
             if (sanitize == Stock.SANITIZE_REMOVE)
             {

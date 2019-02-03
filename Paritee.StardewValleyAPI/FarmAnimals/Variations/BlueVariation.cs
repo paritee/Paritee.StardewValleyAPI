@@ -2,7 +2,7 @@
 
 namespace Paritee.StardewValleyAPI.FarmAnimals.Variations
 {
-    public class Blue : Variation
+    public class BlueVariation : Variation
     {
         public const string BLUE = "Blue";
         public const double CHANCE_VALUE = 0.25;
@@ -10,12 +10,12 @@ namespace Paritee.StardewValleyAPI.FarmAnimals.Variations
 
         public override string Prefix
         {
-            get { return Blue.BLUE; }
+            get { return BlueVariation.BLUE; }
         }
 
         private BlueConfig Config;
 
-        public Blue(BlueConfig config)
+        public BlueVariation(BlueConfig config)
         {
             this.Config = config;
         }
@@ -25,7 +25,7 @@ namespace Paritee.StardewValleyAPI.FarmAnimals.Variations
             if (!this.Config.HasSeenEvent)
                 return false;
 
-            return this.RollChance(Blue.CHANCE_VALUE);
+            return this.RollChance(BlueVariation.CHANCE_VALUE);
         }
 
         public List<string> Sanitize(List<string> types, byte safety = Variation.SAFETY_UNSAFE)
@@ -39,7 +39,7 @@ namespace Paritee.StardewValleyAPI.FarmAnimals.Variations
             // Make sure we didn't remove everything if the safety is on
             // If we did, pretend the sanitize didn't happen!
             // Scenario: types only contained Blue Chicken and the chance failed
-            if (safety == Blue.SAFETY_SAFE && types.Count < 1)
+            if (safety == BlueVariation.SAFETY_SAFE && types.Count < 1)
                 types = ClonedTypes;
 
             return types;

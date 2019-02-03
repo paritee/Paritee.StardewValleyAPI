@@ -1,12 +1,12 @@
 ﻿namespace Paritee.StardewValleyAPI.FarmAnimals.Variations
 {
-    public class White : Variation
+    public class WhiteVariation : Variation
     {
         public const string WHITE = "White";
 
         public override string Prefix
         {
-            get { return White.WHITE; }
+            get { return WhiteVariation.WHITE; }
         }
 
     }
