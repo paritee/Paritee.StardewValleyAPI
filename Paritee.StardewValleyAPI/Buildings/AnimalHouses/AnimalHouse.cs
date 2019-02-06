@@ -20,7 +20,7 @@ namespace Paritee.StardewValleyAPI.Buildings.AnimalHouses
 
         public static string FormatBuilding(string @base, AnimalHouse.Size size)
         {
-            return size.ToString() + " " + @base;
+            return size.Equals(AnimalHouse.Size.Small) ? @base : size.ToString() + " " + @base;
         }
 
         public bool IsSize(AnimalHouse.Size size)
