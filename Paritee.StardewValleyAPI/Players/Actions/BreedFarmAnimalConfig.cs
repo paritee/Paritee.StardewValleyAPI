@@ -6,16 +6,23 @@ namespace Paritee.StardewValleyAPI.Players.Actions
 {
     public class BreedFarmAnimalConfig
     {
-        public List<string> AvailableFarmAnimals;
+        public Dictionary<string, List<string>> AvailableFarmAnimals;
         public BlueVariation BlueFarmAnimals;
-        public FarmAnimalsData FarmAnimalData;
+        public FarmAnimalsData FarmAnimalsData;
+        public bool RandomizeNewbornFromCategory;
+        public bool RandomizeHatchlingFromCategory;
+        public bool IgnoreParentProduceCheck;
 
-        public BreedFarmAnimalConfig(List<string> availableFarmAnimals, BlueVariation blueFarmAnimals)
+        public BreedFarmAnimalConfig(Dictionary<string, List<string>> availableFarmAnimals, BlueVariation blueFarmAnimals, bool randomizeNewbornFromCategory = false, bool randomizeHatchlingFromCategory = false, bool ignoreParentProduceCheck = false)
         {
             this.AvailableFarmAnimals = availableFarmAnimals;
             this.BlueFarmAnimals = blueFarmAnimals;
-            this.FarmAnimalData = new FarmAnimalsData();
+            this.FarmAnimalsData = new FarmAnimalsData();
 
+            // Default these to false for backwards compatibility
+            this.RandomizeNewbornFromCategory = randomizeNewbornFromCategory;
+            this.RandomizeHatchlingFromCategory = randomizeHatchlingFromCategory;
+            this.IgnoreParentProduceCheck = ignoreParentProduceCheck;
         }
     }
 }

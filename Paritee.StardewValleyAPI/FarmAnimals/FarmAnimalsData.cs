@@ -6,6 +6,7 @@ namespace Paritee.StardewValleyAPI.FarmAnimals
     {
         private const string FILE_PATH = "Data\\FarmAnimals";
 
+        public const string NO_PRODUCE_ITEM_ID = "-1";
         public const byte DEFAULT_PRODUCE_INDEX = 2;
         public const byte DELUXE_PRODUCE_INDEX = 3;
         public const byte BUILDING_TYPE_I_LIVE_IN_INDEX = 15;
@@ -25,7 +26,31 @@ namespace Paritee.StardewValleyAPI.FarmAnimals
         {
             string[] DataArr = this.Split(this.GetEntries()[key]);
 
-            return produceIndex.Equals(DataArr[FarmAnimalsData.DEFAULT_PRODUCE_INDEX]) || produceIndex.Equals(DataArr[FarmAnimalsData.DELUXE_PRODUCE_INDEX]);
+            return DataArr[FarmAnimalsData.DEFAULT_PRODUCE_INDEX].Equals(produceIndex) || DataArr[FarmAnimalsData.DELUXE_PRODUCE_INDEX].Equals(produceIndex);
+        }
+
+        public bool ProducesAtLeastOneItem(string key, string[] produceIndexes)
+        {
+            string[] DataArr = this.Split(this.GetEntries()[key]);
+
+            foreach (string produceIndex in produceIndexes)
+            {
+                if (this.ProducesItem(key, produceIndex))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool ProducesNothing(string key)
+        {
+            string[] DataArr = this.Split(this.GetEntries()[key]);
+
+            // Note the difference between this function and ProducesItem - this 
+            // function check that both default AND deluxe produce are "nothing"
+            return DataArr[FarmAnimalsData.DEFAULT_PRODUCE_INDEX].Equals(FarmAnimalsData.NO_PRODUCE_ITEM_ID) && DataArr[FarmAnimalsData.DELUXE_PRODUCE_INDEX].Equals(FarmAnimalsData.NO_PRODUCE_ITEM_ID);
         }
 
         public List<string> FindTypesByProduce(string produceIndex)

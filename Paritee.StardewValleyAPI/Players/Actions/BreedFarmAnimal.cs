@@ -19,17 +19,23 @@ namespace Paritee.StardewValleyAPI.Players.Actions
         }
 
         public Player Farmer;
-        private List<string> AvailableFarmAnimals;
+        private readonly Dictionary<string, List<string>> AvailableFarmAnimals;
 
-        private BlueVariation BlueFarmAnimals;
-        private FarmAnimalsData FarmAnimalData;
+        private readonly BlueVariation BlueFarmAnimals;
+        private readonly FarmAnimalsData FarmAnimalsData;
+        private readonly bool RandomizeNewbornFromCategory;
+        private readonly bool RandomizeHatchlingFromCategory;
+        private readonly bool IgnoreParentProduceCheck;
 
         public BreedFarmAnimal(Player farmer, BreedFarmAnimalConfig breedFarmAnimalConfig)
         {
             this.Farmer = farmer;
             this.AvailableFarmAnimals = breedFarmAnimalConfig.AvailableFarmAnimals;
             this.BlueFarmAnimals = breedFarmAnimalConfig.BlueFarmAnimals;
-            this.FarmAnimalData = breedFarmAnimalConfig.FarmAnimalData;
+            this.FarmAnimalsData = breedFarmAnimalConfig.FarmAnimalsData;
+            this.RandomizeNewbornFromCategory = breedFarmAnimalConfig.RandomizeNewbornFromCategory;
+            this.RandomizeHatchlingFromCategory = breedFarmAnimalConfig.RandomizeHatchlingFromCategory;
+            this.IgnoreParentProduceCheck = breedFarmAnimalConfig.IgnoreParentProduceCheck;
         }
 
         private List<string> Sanitize(List<string> types)
@@ -45,8 +51,24 @@ namespace Paritee.StardewValleyAPI.Players.Actions
 
         public FarmAnimals.FarmAnimal CreateFromParent(StardewValley.FarmAnimal parent, string name)
         {
-            // @TODO: Randomize based on farm animal data/category (ex. Dairy Cow)?
-            return this.CreateBaby(name, parent.type, (StardewValley.AnimalHouse)parent.home.indoors, parent.myID);
+            string type;
+
+            // ex. Bulls don't produce anything, but may still exist in the Dairy Cow category
+            if (this.RandomizeNewbornFromCategory)
+            {
+                List<string> types = this.ConsiderTypesFromCategory(new List<string>() { parent.type }, new string[] { parent.defaultProduceIndex.ToString(), parent.deluxeProduceIndex.ToString() });
+
+                // Check the count in case someone messed up and removed the parent from the config
+                type = types.Count > 0 ? types.ElementAt(Game1.random.Next(types.Count)) : parent.type;
+            }
+            else
+            {
+                // Don't randomize within the parent's category
+                // This means the baby will always match the parent's type
+                type = parent.type;
+            }
+
+            return this.CreateBaby(name, type, (StardewValley.AnimalHouse)parent.home.indoors, parent.myID);
         }
 
         public void CreateFromIncubator(StardewValley.AnimalHouse animalHouse, string name)
@@ -84,11 +106,26 @@ namespace Paritee.StardewValleyAPI.Players.Actions
             List<StardewValley.FarmAnimal> possibleParents = incubator.AnimalHouse.animals.Pairs.ToDictionary(pair => pair.Key, pair => pair.Value).Values.ToList<StardewValley.FarmAnimal>();
             List<string> types = this.DetermineTypesFromPossibleParents(heldItemIndex, possibleParents);
 
-            // @TODO: VERY SMALL random chance to get something you don't own? Leave to random event?
-            if (types.Count > 0)
-                return types;
+            if (types.Count <= 0)
+            {
+                // Try to grab anything that produces that item regardless if owned/in the coop
+                // ex. Parent was sold before hatchling hatched
+                types = this.DetermineTypesFromProduce(incubator.GetIncubatingItemIndex());
+            }
 
-            return this.DetermineTypesFromProduce(incubator.GetIncubatingItemIndex());
+            // ex. Roosters don't produce anything, but may still exist in the Chicken category
+            if (this.RandomizeHatchlingFromCategory)
+            {
+                List<string> typesFromCategory = this.ConsiderTypesFromCategory(types, new string[] { heldItemIndex });
+
+                // Check the count in case someone messed up and removed the parent from the config
+                if (typesFromCategory.Count > 0)
+                {
+                    types = typesFromCategory;
+                }
+            }
+
+            return types;
         }
 
         private List<string> DetermineTypesFromPossibleParents(string produceIndex, List<StardewValley.FarmAnimal> possibleParents)
@@ -100,15 +137,54 @@ namespace Paritee.StardewValleyAPI.Players.Actions
             {
                 // Already has this type
                 if (types.Contains(possibleParent.type))
+                {
                     continue;
+                }
 
                 // Babies cannot be parents
                 if (possibleParent.isBaby())
+                {
                     continue;
+                }
 
                 // Must be an adult and must produce this item
-                if (this.FarmAnimalData.ProducesItem(possibleParent.type, produceIndex))
+                if (this.FarmAnimalsData.ProducesItem(possibleParent.type, produceIndex))
+                {
                     types.Add(possibleParent.type);
+                }
+            }
+
+            return types;
+        }
+
+        private List<string> ConsiderTypesFromCategory(List<string> types, string[] produceIndexes)
+        {
+            // Grab all the categories that are possible
+            types = this.AvailableFarmAnimals.Where(
+                    // Use Intersect to check if the two lists have any elements in common
+                    kvp => kvp.Value.Intersect(types).Any()
+                )
+                // Keep the dictionary
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
+                // We only care about the list of lists
+                .Values
+                // and we need to flatten it
+                .SelectMany(i => i)
+                // so that we just get a single flat list of types to randomize later
+                .ToList();
+
+            // Any check is to only attempt to remove types if we're checking 
+            // on an actual produce item. Bulls would fail this check as they 
+            // produce -1,-1 and we have no reason to filter out other animals 
+            // in this category
+            if (!this.IgnoreParentProduceCheck && produceIndexes.Any(i => !i.Equals(FarmAnimalsData.NO_PRODUCE_ITEM_ID)))
+            {
+                // We still don't want to include types that explicitly state they 
+                // produce a different item.
+                // Remove any type that:
+                // - produces something and
+                // - the something is not the specified item
+                types.RemoveAll(i => !this.FarmAnimalsData.ProducesNothing(i) && !this.FarmAnimalsData.ProducesAtLeastOneItem(i, produceIndexes));
             }
 
             return types;
@@ -116,13 +192,15 @@ namespace Paritee.StardewValleyAPI.Players.Actions
 
         private List<string> DetermineTypesFromProduce(string produceIndex)
         {
-            return this.FarmAnimalData.FindTypesByProduce(produceIndex);
+            return this.FarmAnimalsData.FindTypesByProduce(produceIndex);
         }
 
         private void CreateRandomBaby(string name, List<string> types, StardewValley.AnimalHouse animalHouse, long parentID = FarmAnimals.FarmAnimal.PARENT_ID_DEFAULT)
         {
             if (types.Count < 1)
+            {
                 return;
+            }
 
             // Randomize an eligible animal type
             string type = types.ElementAt(Game1.random.Next(types.Count));
@@ -145,16 +223,21 @@ namespace Paritee.StardewValleyAPI.Players.Actions
 
         private bool IsAvailable(string type)
         {
-            return this.AvailableFarmAnimals.Contains(type);
+            // SelectMany will flatten the list of lists
+            return this.AvailableFarmAnimals.Values.SelectMany(i => i).Contains(type);
         }
 
         public BreedFarmAnimal.NamingEvent DetermineNamingEvent()
         {
             if (this.IsNamingNewlyHatchedFarmAnimal())
+            {
                 return BreedFarmAnimal.NamingEvent.Hatched;
+            }
 
             if (this.IsNamingNewlyBornFarmAnimal())
+            {
                 return BreedFarmAnimal.NamingEvent.Birthed;
+            }
 
             return BreedFarmAnimal.NamingEvent.None;
         }
@@ -180,18 +263,24 @@ namespace Paritee.StardewValleyAPI.Players.Actions
         private bool IsNamingNewlyBornFarmAnimal()
         {
             if (this.IsNamingNewlyHatchedFarmAnimal())
+            {
                 return false;
+            }
 
             // Could be purchasing an animal, receiving a pet or a farm event
             // We only want to show this on the farm event
             if (this.IsFarmEvent())
+            {
                 return false;
+            }
 
             QuestionEvent QuestionEvent = Game1.farmEvent as QuestionEvent;
 
             // Make sure the event was actually set up
             if (QuestionEvent.animal == null)
+            {
                 return false;
+            }
 
             return true;
         }

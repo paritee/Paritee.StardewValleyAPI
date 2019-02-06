@@ -25,5 +25,10 @@ namespace Paritee.StardewValleyAPI.Content
         {
             return this.Entries;
         }
+
+        public bool Exists(string type)
+        {
+            return this.Entries.ContainsKey(type);
+        }
     }
 }
